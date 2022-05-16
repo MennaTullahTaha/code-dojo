@@ -1,0 +1,1 @@
+/usr/bin/g++  -g   CMakeFiles/check_setup.dir/main.cpp.o CMakeFiles/check_setup.dir/Board.cpp.o  -o check_setup 

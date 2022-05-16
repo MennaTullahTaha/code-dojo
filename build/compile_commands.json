@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/menna/Documents/C++WorkSpace/assessment/build",
+  "command": "/usr/bin/g++    -g   -std=gnu++2a -o CMakeFiles/check_setup.dir/main.cpp.o -c /home/menna/Documents/C++WorkSpace/assessment/main.cpp",
+  "file": "/home/menna/Documents/C++WorkSpace/assessment/main.cpp"
+},
+{
+  "directory": "/home/menna/Documents/C++WorkSpace/assessment/build",
+  "command": "/usr/bin/g++    -g   -std=gnu++2a -o CMakeFiles/check_setup.dir/Board.cpp.o -c /home/menna/Documents/C++WorkSpace/assessment/Board.cpp",
+  "file": "/home/menna/Documents/C++WorkSpace/assessment/Board.cpp"
+}
+]
