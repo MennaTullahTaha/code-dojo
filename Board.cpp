@@ -1,9 +1,11 @@
 #include "Board.h"
+#include <random>
 
-Board::Board()
+Board::Board(int given_size)
 {
     //Initiualize the board with the given values from exam
-    initializeBoard();
+    size = given_size;
+    initializeBoard(given_size);
     initializeRowsState();
 }
 
@@ -14,9 +16,9 @@ Board::~Board()
 void Board::printBoard()
 {
     vector<vector<int>> board = getBoard();
-    for(int i = 0; i < 3; i++)
-        for(int j = 0; j < 3; j++)
-            if(j!= 2)
+    for(int i = 0; i < size; i++)
+        for(int j = 0; j < size; j++)
+            if(j!= size-1)
                 cout<<board[i][j]<<" ";
             else
                 cout<<board[i][j]<<endl;
@@ -27,38 +29,31 @@ vector<vector<int> > Board::getBoard()
     return gameBoard;
 }
 
-void Board::initializeBoard()
+void Board::initializeBoard(int size)
 {
-    for(int i = 0; i < 3; i++)
-    {
-        gameBoard.push_back(vector<int>(3));
-        gameBoard[0][i] = i+1;
-    }
+    for(int i = 0; i < size; i++)
+        gameBoard.push_back(vector<int>(size));
     
-    gameBoard[1][0] = 4;
-    gameBoard[1][1] = 4;
-    gameBoard[1][2] = 5;
-    
-    gameBoard[2][0] = 5;
-    gameBoard[2][1] = 3;
-    gameBoard[2][2] = 4;
+    for(int i = 0; i < size; i++)
+        for(int j = 0; j < size; j++)
+            gameBoard[i][j] = rand() % 5 + 1;
 }
 
 void Board::initializeRowsState()
 {
-    for(int i = 0; i < 3; i++)
-        rowsStates[i] = 1;
+    for(int i = 0; i < size; i++)
+        rowsStates.push_back(1);
 }
 
 bool Board::isSwapValid(int firstRowPosition, int firstColumnPosition, int secondRowPosition, int secondColumnPosition)
 {
-    if(firstRowPosition >= 0 && firstRowPosition < 3)
+    if(firstRowPosition >= 0 && firstRowPosition < size)
     {
-        if(firstColumnPosition>=0 && firstColumnPosition < 3)
+        if(firstColumnPosition>=0 && firstColumnPosition < size)
         {
-            if(secondRowPosition>=0 && secondRowPosition<3)
+            if(secondRowPosition>=0 && secondRowPosition<size)
             {
-                if(secondColumnPosition>=0 && secondColumnPosition<3)
+                if(secondColumnPosition>=0 && secondColumnPosition<size)
                 {
                     if(abs(secondRowPosition-firstRowPosition) <= 1 && abs(secondColumnPosition - firstColumnPosition) <= 1)
                         return true;
@@ -69,14 +64,14 @@ bool Board::isSwapValid(int firstRowPosition, int firstColumnPosition, int secon
     return false;
 }
 
-vector<vector<int> > Board::swapAdjacentCells(int firstRowPosition, int firstColumnPosition, int secondRowPosition, int secondColumnPosition)
+bool Board::swapAdjacentCells(int firstRowPosition, int firstColumnPosition, int secondRowPosition, int secondColumnPosition)
 {
     bool check = isSwapValid(firstRowPosition, firstColumnPosition, secondRowPosition, secondColumnPosition);
 
     if(check)
         swap(gameBoard[firstRowPosition][firstColumnPosition], gameBoard[secondRowPosition][secondColumnPosition]);
 
-    return gameBoard;
+    return check;
 }
 
 bool Board::isRowValid(int rowIndex)
