@@ -49,3 +49,42 @@ void Board::initializeRowsState()
     for(int i = 0; i < 3; i++)
         rowsStates[i] = 1;
 }
+
+bool Board::isSwapValid(int firstRowPosition, int firstColumnPosition, int secondRowPosition, int secondColumnPosition)
+{
+    if(firstRowPosition >= 0 && firstRowPosition < 3)
+    {
+        if(firstColumnPosition>=0 && firstColumnPosition < 3)
+        {
+            if(secondRowPosition>=0 && secondRowPosition<3)
+            {
+                if(secondColumnPosition>=0 && secondColumnPosition<3)
+                {
+                    if(abs(secondRowPosition-firstRowPosition) <= 1 && abs(secondColumnPosition - firstColumnPosition) <= 1)
+                        return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+vector<vector<int> > Board::swapAdjacentCells(int firstRowPosition, int firstColumnPosition, int secondRowPosition, int secondColumnPosition)
+{
+    bool check = isSwapValid(firstRowPosition, firstColumnPosition, secondRowPosition, secondColumnPosition);
+
+    if(check)
+        swap(gameBoard[firstRowPosition][firstColumnPosition], gameBoard[secondRowPosition][secondColumnPosition]);
+
+    return gameBoard;
+}
+
+bool Board::isRowValid(int rowIndex)
+{
+    return rowsStates[rowIndex];
+}
+
+void Board::deleteRow(int rowIndex)
+{
+    rowsStates[rowIndex] = 0;
+}
