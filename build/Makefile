@@ -123,32 +123,32 @@ check_setup/fast:
 	$(MAKE) -f CMakeFiles/check_setup.dir/build.make CMakeFiles/check_setup.dir/build
 .PHONY : check_setup/fast
 
-Board.o: Board.cpp.o
+board.o: board.cpp.o
 
-.PHONY : Board.o
+.PHONY : board.o
 
 # target to build an object file
-Board.cpp.o:
-	$(MAKE) -f CMakeFiles/check_setup.dir/build.make CMakeFiles/check_setup.dir/Board.cpp.o
-.PHONY : Board.cpp.o
+board.cpp.o:
+	$(MAKE) -f CMakeFiles/check_setup.dir/build.make CMakeFiles/check_setup.dir/board.cpp.o
+.PHONY : board.cpp.o
 
-Board.i: Board.cpp.i
+board.i: board.cpp.i
 
-.PHONY : Board.i
+.PHONY : board.i
 
 # target to preprocess a source file
-Board.cpp.i:
-	$(MAKE) -f CMakeFiles/check_setup.dir/build.make CMakeFiles/check_setup.dir/Board.cpp.i
-.PHONY : Board.cpp.i
+board.cpp.i:
+	$(MAKE) -f CMakeFiles/check_setup.dir/build.make CMakeFiles/check_setup.dir/board.cpp.i
+.PHONY : board.cpp.i
 
-Board.s: Board.cpp.s
+board.s: board.cpp.s
 
-.PHONY : Board.s
+.PHONY : board.s
 
 # target to generate assembly for a file
-Board.cpp.s:
-	$(MAKE) -f CMakeFiles/check_setup.dir/build.make CMakeFiles/check_setup.dir/Board.cpp.s
-.PHONY : Board.cpp.s
+board.cpp.s:
+	$(MAKE) -f CMakeFiles/check_setup.dir/build.make CMakeFiles/check_setup.dir/board.cpp.s
+.PHONY : board.cpp.s
 
 main.o: main.cpp.o
 
@@ -186,9 +186,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... check_setup"
-	@echo "... Board.o"
-	@echo "... Board.i"
-	@echo "... Board.s"
+	@echo "... board.o"
+	@echo "... board.i"
+	@echo "... board.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

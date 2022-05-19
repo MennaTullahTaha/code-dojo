@@ -70,29 +70,29 @@ CMakeFiles/check_setup.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/check_setup.dir/main.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/menna/Documents/C++WorkSpace/assessment/main.cpp -o CMakeFiles/check_setup.dir/main.cpp.s
 
-CMakeFiles/check_setup.dir/Board.cpp.o: CMakeFiles/check_setup.dir/flags.make
-CMakeFiles/check_setup.dir/Board.cpp.o: ../Board.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/menna/Documents/C++WorkSpace/assessment/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/check_setup.dir/Board.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/check_setup.dir/Board.cpp.o -c /home/menna/Documents/C++WorkSpace/assessment/Board.cpp
+CMakeFiles/check_setup.dir/board.cpp.o: CMakeFiles/check_setup.dir/flags.make
+CMakeFiles/check_setup.dir/board.cpp.o: ../board.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/menna/Documents/C++WorkSpace/assessment/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/check_setup.dir/board.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/check_setup.dir/board.cpp.o -c /home/menna/Documents/C++WorkSpace/assessment/board.cpp
 
-CMakeFiles/check_setup.dir/Board.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/check_setup.dir/Board.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/menna/Documents/C++WorkSpace/assessment/Board.cpp > CMakeFiles/check_setup.dir/Board.cpp.i
+CMakeFiles/check_setup.dir/board.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/check_setup.dir/board.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/menna/Documents/C++WorkSpace/assessment/board.cpp > CMakeFiles/check_setup.dir/board.cpp.i
 
-CMakeFiles/check_setup.dir/Board.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/check_setup.dir/Board.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/menna/Documents/C++WorkSpace/assessment/Board.cpp -o CMakeFiles/check_setup.dir/Board.cpp.s
+CMakeFiles/check_setup.dir/board.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/check_setup.dir/board.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/menna/Documents/C++WorkSpace/assessment/board.cpp -o CMakeFiles/check_setup.dir/board.cpp.s
 
 # Object files for target check_setup
 check_setup_OBJECTS = \
 "CMakeFiles/check_setup.dir/main.cpp.o" \
-"CMakeFiles/check_setup.dir/Board.cpp.o"
+"CMakeFiles/check_setup.dir/board.cpp.o"
 
 # External object files for target check_setup
 check_setup_EXTERNAL_OBJECTS =
 
 check_setup: CMakeFiles/check_setup.dir/main.cpp.o
-check_setup: CMakeFiles/check_setup.dir/Board.cpp.o
+check_setup: CMakeFiles/check_setup.dir/board.cpp.o
 check_setup: CMakeFiles/check_setup.dir/build.make
 check_setup: CMakeFiles/check_setup.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/menna/Documents/C++WorkSpace/assessment/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable check_setup"

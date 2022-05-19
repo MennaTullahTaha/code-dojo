@@ -1,49 +1,75 @@
 #include <iostream>
-#include "Board.h"
+#include "board.h"
 #include <string>
 using namespace std;
+
+void playGame(Board newGame)
+{
+    int firstRow, firstColumn, secondRow, secondColumn, decision;
+    string direction, keepPlaying;
+    do
+    {
+        cout<<"Do you want to swap with positions or directions? 1/2"<<endl;
+
+        cin>>decision;
+
+        if(decision ==1)
+        {
+            cout<<"Please enter 2 positions 0 based"<<endl;
+            cin>>firstRow>>firstColumn>>secondRow>>secondColumn;
+
+            if(newGame.swapAdjacentCells(firstRow,firstColumn,secondRow,secondColumn))
+                cout<<"Swapped!"<<endl;
+            else
+                cout<<"Illegal Move!"<<endl;
+        }
+        else if(decision == 2)
+        {
+            cout<<"Please enter the position of cells zero based and direction"<<endl;
+
+            cin>>firstRow>>firstColumn>>direction;            
+
+            if(newGame.swapAdjacentCellsWithDirection(firstRow,firstColumn,direction))
+                cout<<"Swapped!"<<endl;
+            else
+                cout<<"Illegal Move!"<<endl;
+        }
+
+        newGame.printBoard();
+
+        cout<<endl<<endl;
+
+        cout<<"Do you want to keep playing?"<<endl;
+
+        cin>>keepPlaying;
+
+    } while (keepPlaying == "yes");
+}
+
 int main()
 {
-    cout<<"Please enter the size of the board"<<endl; 
+    string choice;
+    int size;
 
-    int size, first_row, first_column, second_row, second_column;
-    string direction;
+    do {
 
-    cin>>size;
+        cout<<"Welcome to diamonds hunt! please give the size of the board"<<endl;
 
-    Board new_game(size);
+        cin>>size;
 
-    new_game.printBoard();
+        Board newGame(size);
 
-    cout<<"---------------------"<<endl;
+        newGame.printBoard();
 
-    cout<<"Please enter the position of cells zero based"<<endl;
+        cout<<endl<<endl;
 
-    cin>>first_row>>first_column>>second_row>>second_column;
+        playGame(newGame);
 
-    if(new_game.swapAdjacentCells(first_row,first_column,second_row,second_column))
-        cout<<"Swapped!"<<endl;
-    else
-        cout<<"Illegal Move!"<<endl;
+        cout<<"do you wanna continue?"<<endl;
 
-    new_game.printBoard();
+        cin>>choice;
 
-    cout<<"-------------------------"<<endl;
-
-    cout<<"Please enter the position of cells zero based and direction"<<endl;
-
-    cin>>first_row>>first_column;
-    //TODO: check if direction is entered correctly by the user and in lower case
-    cin>>direction;
-
-    if(new_game.swapAdjacentCellsWithDirection(first_row,first_column,direction))
-        cout<<"Swapped!"<<endl;
-    else
-        cout<<"Illegal Move!"<<endl;
-
-    new_game.printBoard();
-
-    cout<<"-----------------------------"<<endl;
+    } while( choice == "yes");
 
 	return 0;
 }
