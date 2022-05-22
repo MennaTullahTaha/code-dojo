@@ -6,14 +6,14 @@ using namespace std;
 void playGame(Board newGame)
 {
     int firstRow, firstColumn, secondRow, secondColumn, decision;
-    string direction, keepPlaying;
+    string direction;
     do
     {
         cout<<"Do you want to swap with positions or directions? 1/2"<<endl;
 
         cin>>decision;
 
-        if(decision ==1)
+        if(decision == 1)
         {
             cout<<"Please enter 2 positions 0 based"<<endl;
             cin>>firstRow>>firstColumn>>secondRow>>secondColumn;
@@ -39,17 +39,17 @@ void playGame(Board newGame)
 
         cout<<endl<<endl;
 
-        cout<<"Do you want to keep playing?"<<endl;
+        cout<<"Current Score: "<<newGame.score<<endl;
 
-        cin>>keepPlaying;
+        newGame.numberOfMovesLeft--;
 
-    } while (keepPlaying == "yes");
+    } while (newGame.numberOfMovesLeft > 0 && newGame.checkMoves());
 }
 
 int main()
 {
     string choice;
-    int size;
+    int size,movesCount;
 
     do {
 
@@ -57,7 +57,11 @@ int main()
 
         cin>>size;
 
-        Board newGame(size);
+        cout<<"How many moves do you want to have for this game?"<<endl;
+
+        cin>>movesCount;
+
+        Board newGame(size, movesCount);
 
         newGame.printBoard();
 
@@ -65,7 +69,7 @@ int main()
 
         playGame(newGame);
 
-        cout<<"do you wanna continue?"<<endl;
+        cout<<"do you wanna play again?"<<endl;
 
         cin>>choice;
 

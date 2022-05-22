@@ -8,7 +8,6 @@ class Board
 {
 private:
     vector< vector<int> > gameBoard;
-    vector<bool> rowsStates;
     int size;
     bool isShapeLVertically(int, int, int, int);
     bool isShapeTVertically(int, int, int, int);
@@ -16,18 +15,24 @@ private:
     bool isShapeTHorziontally(int, int, int, int);
     bool checkShapeHorziontally();
     bool checkShapeVeritically();
+    void checkForSameGemsRows();
+    void refillGems();
+    void removeGemsFromRow(int, int, int);
+    void populateGemsFromRowsAbove(int, int);
+    void checkForSameGemsColumn();
+    void removeGemsFromColumn(int,int,int);
+
 public:
-    Board(int);
+    int numberOfMovesLeft, score;
+    Board(int, int);
     ~Board();
     void printBoard();
+    bool checkMoves();
     vector<vector<int> > getBoard();
     bool isSwapValid(int, int, int, int);
     bool swapAdjacentCellsWithDirection(int, int, string);
     bool swapAdjacentCells(int, int, int, int);
     bool checkDirection(int, int, string);
     bool checkShape();
-    bool isRowValid(int);
-    void deleteRow(int);
     void initializeBoard(int);
-    void initializeRowsState();
 };

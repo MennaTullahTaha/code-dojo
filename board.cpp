@@ -2,12 +2,13 @@
 #include <unordered_map>
 #include <random>
 
-Board::Board(int given_size)
+Board::Board(int given_size, int moves)
 {
     size = given_size;
+    numberOfMovesLeft = moves;
+    score = 0;
     //Initiualize the board with the random values between 1 and 5
     initializeBoard(given_size);
-    initializeRowsState();
 }
 
 Board::~Board()
@@ -18,11 +19,15 @@ void Board::printBoard()
 {
     vector<vector<int>> board = getBoard();
     for(int i = 0; i < size; i++)
+    {
+        cout<<"Row "<<i<<"  ";
         for(int j = 0; j < size; j++)
             if(j!= size-1)
-                cout<<board[i][j]<<" ";
+                cout<<board[i][j]<<"    ";
             else
                 cout<<board[i][j]<<endl;
+        cout<<endl;
+    }
 }
 
 vector<vector<int> > Board::getBoard()
@@ -40,14 +45,109 @@ void Board::initializeBoard(int size)
             gameBoard[i][j] = rand() % 5 + 1;
 }
 
-//make all rows available for swapping
-void Board::initializeRowsState()
+void Board::checkForSameGemsRows()
 {
+    int currentGem, counter, endColumn = -1;
     for(int i = 0; i < size; i++)
-        rowsStates.push_back(1);
+    {       
+        for(int j = 0; j < size; j++)
+        {
+            counter = 1;
+            for(int k = j+1; k < size; k++)
+            {
+                if(gameBoard[i][j] == gameBoard[i][k])
+                {
+                    counter++;
+                    endColumn = k;
+                }    
+                else
+                {
+                    endColumn = k-1;
+                    break;
+                }
+            }
+            if (counter >=3)
+            {
+                removeGemsFromRow(i,j,endColumn);
+                score+=(counter * 5);
+            }
+        }
+    }
 }
 
-//check if the swap movement could be done
+void Board::removeGemsFromRow(int row, int startColumn, int endColumn)
+{
+    for(int i = startColumn; i <= endColumn; i++)
+        gameBoard[row][i] = -1;
+}
+
+void Board::refillGems()
+{
+    checkForSameGemsRows();
+
+    checkForSameGemsColumn();
+
+    for(int i = size-1; i >= 0; i--)
+    {
+        for(int k = 0; k < size; k++)
+            if(gameBoard[i][k] == -1)
+                populateGemsFromRowsAbove(i,k);
+    }
+   
+}
+
+void Board::checkForSameGemsColumn()
+{
+    int currentGem, counter, endRow;
+    for(int i = 0; i < size; i++)
+    {       
+        for(int j = 0; j < size; j++)
+        {
+            counter = 1;
+            for(int k = j+1; k < size; k++)
+            {
+                if(gameBoard[j][i] == gameBoard[k][i])
+                {
+                    counter++;
+                    endRow = k;
+                }    
+                else
+                {
+                    endRow = k-1;
+                    break;
+                }
+            }
+            if (counter >=3)
+            {
+                removeGemsFromColumn(j,i,endRow);
+                score += (counter*5);
+            }
+        }
+    }
+}
+
+void Board::removeGemsFromColumn(int startRow, int column, int endRow)
+{
+    for(int i = startRow; i <= endRow; i++)
+        gameBoard[i][column] = -1;
+}
+
+void Board::populateGemsFromRowsAbove(int row, int column)
+{
+    for(int i = 0; i < size-1 ; i++)
+    {
+        if(gameBoard[i+1][column] ==-1 && gameBoard[i][column]!= -1)
+        {
+            gameBoard[i+1][column]  = gameBoard[i][column];
+            gameBoard[i][column] = rand() % 5 + 1;
+        }
+    }
+
+    for(int i = 0; i < size; i++)
+        if(gameBoard[0][i] == -1)
+            gameBoard[0][i] = rand() % 5 + 1;
+}
+
 bool Board::isSwapValid(int firstRowPosition, int firstColumnPosition, int secondRowPosition, int secondColumnPosition)
 {
     if(firstRowPosition >= 0 && firstRowPosition < size)
@@ -67,7 +167,6 @@ bool Board::isSwapValid(int firstRowPosition, int firstColumnPosition, int secon
     return false;
 }
 
-//swap adjacent cells with positions
 bool Board::swapAdjacentCells(int firstRowPosition, int firstColumnPosition, int secondRowPosition, int secondColumnPosition)
 {
     bool check = isSwapValid(firstRowPosition, firstColumnPosition, secondRowPosition, secondColumnPosition);
@@ -76,13 +175,16 @@ bool Board::swapAdjacentCells(int firstRowPosition, int firstColumnPosition, int
     {
         swap(gameBoard[firstRowPosition][firstColumnPosition], gameBoard[secondRowPosition][secondColumnPosition]);
         if(checkShape())
-            cout<<"Special bomb found!!"<<endl;
+        {
+            cout<<"Special bomb found!! you get a bonus of 50 points!"<<endl;
+            score += 50;
+        }
+        refillGems();
     }
 
     return check;
 }
 
-//swap cells with direction provided
 bool Board::swapAdjacentCellsWithDirection(int firstRowPosition, int firstColumnPosition, string direction)
 {
     bool result = false;
@@ -107,7 +209,6 @@ bool Board::swapAdjacentCellsWithDirection(int firstRowPosition, int firstColumn
     return result;
 }
 
-//check if direction is valid
 bool Board::checkDirection(int firstRowPosition, int firstColumnPosition, string direction)
 {
     bool result = true;
@@ -124,7 +225,6 @@ bool Board::checkDirection(int firstRowPosition, int firstColumnPosition, string
     return result;
 }
 
-//check if there are enough numbers to form a shape
 bool Board::checkShape()
 {
     return checkShapeHorziontally() || checkShapeVeritically();
@@ -132,27 +232,30 @@ bool Board::checkShape()
 
 bool Board::checkShapeHorziontally()
 {
-    int counter = 1;
+    int counter , endColumn;
 
     for(int i = 0; i < size ; i++)
     {
         for(int j =0 ; j < size; j++)
         {
+            counter = 1;
             for(int k = j+1; k < size; k++)
             {
-                if(gameBoard[i][k] == gameBoard[i][j])
+                if(gameBoard[i][j] == gameBoard[i][k])
                 {
                     counter++;
-                    if(counter >= 3)
-                        if(isShapeLVertically(i,j,k,gameBoard[i][j]) || isShapeTVertically(i,j,k,gameBoard[i][j]))
-                            return true;
-                }
+                    endColumn = k;
+                }    
                 else
                 {
-                    counter = 1;
-                    continue;
+                    endColumn = k-1;
+                    break;
                 }
             }
+                
+            if(counter >= 3)
+                if(isShapeLVertically(i,j,endColumn,gameBoard[i][j]) || isShapeTVertically(i,j,endColumn,gameBoard[i][j]))
+                    return true;
         }
     }
     return false;
@@ -160,33 +263,34 @@ bool Board::checkShapeHorziontally()
 
 bool Board::checkShapeVeritically()
 {
-    int counter = 1;
+    int counter, endRow;
 
     for(int i = 0; i < size ; i++)
     {
         for(int j =0 ; j < size; j++)
         {
+            counter = 1;
             for(int k = j+1; k < size; k++)
             {
                 if(gameBoard[k][i] == gameBoard[j][i])
                 {
                     counter++;
-                    if(counter >= 3)
-                        if(isShapeLHorziontally(i, j, k, gameBoard[k][i]) || isShapeTHorziontally(i,j,k,gameBoard[j][i]))
-                            return true;
-                }
+                    endRow = k;
+                }    
                 else
                 {
-                    counter = 1;
-                    continue;
+                    endRow = k-1;
+                    break;
                 }
             }
+                if(counter >= 3)
+                    if(isShapeLHorziontally(i, j, endRow, gameBoard[endRow][i]) || isShapeTHorziontally(i,j,endRow,gameBoard[j][i]))
+                        return true;         
         }
     }
     return false;
 }
 
-//TODO: check if shapeL is there
 bool Board::isShapeLVertically(int rowId, int start, int end,  int gemType)
 {
     int rightCounter = 0, leftCounter = 0;
@@ -223,25 +327,24 @@ bool Board::isShapeLVertically(int rowId, int start, int end,  int gemType)
     return false;
 }
 
-//TODO: check if shapeT is there
 bool Board::isShapeTVertically(int rowId, int start,int end, int gemType)
 {
-    if((start+end)%2 == 0)
+    if((end - start + 1)%2 == 0)
         return false;
-    int column = (start+end)/2, counter = 0;
+    int column = (end - start + 1)/2 + start , counter = 0;
     for(int i = rowId+1; i < size; i++)
     {
         if(gameBoard[i][column] == gemType)
             counter++;
         else
-        {
+        {   
             if (counter >= 2)
                 return true;
             else
                 break;
         }
     }
-
+    counter = 0;
     for(int i = rowId-1; i >= 0; i--)
     {
         if(gameBoard[i][column] == gemType)
@@ -259,9 +362,9 @@ bool Board::isShapeTVertically(int rowId, int start,int end, int gemType)
 
 bool Board::isShapeTHorziontally(int columnId, int startRow,int endRow, int gemType)
 {
-    if((startRow+endRow)%2 == 0)
+    if((endRow - startRow + 1)%2 == 0)
         return false;
-    int row = (startRow+endRow)/2, counter = 0;
+    int row = (endRow - startRow + 1)/2 + startRow, counter = 0;
     for(int i = columnId-1; i >= 0; i--)
     {
         if(gameBoard[row][i] == gemType)
@@ -277,7 +380,7 @@ bool Board::isShapeTHorziontally(int columnId, int startRow,int endRow, int gemT
     counter = 0;
     for(int i = columnId+1; i < size; i++)
     {
-        if(gameBoard[row][i] = gemType)
+        if(gameBoard[row][i] == gemType)
             counter++;
         else
         {
@@ -327,14 +430,24 @@ bool Board::isShapeLHorziontally(int columnId, int startRow,int endRow, int gemT
     return false;
 }
 
-//Check if row is valid to perform swap on for later stages at the game
-bool Board::isRowValid(int rowIndex)
+bool Board::checkMoves()
 {
-    return rowsStates[rowIndex];
-}
-
-//Check disable row for further development of the game 
-void Board::deleteRow(int rowIndex)
-{
-    rowsStates[rowIndex] = 0;
+    unordered_map<int,int> countGemTypePerRow;
+    for(int i = 0; i < gameBoard.size(); i++)
+    {   
+        countGemTypePerRow.clear();
+        for(int j = 0; j < gameBoard.size(); j++)
+        {
+            if(countGemTypePerRow[gameBoard[i][j]])
+                countGemTypePerRow[gameBoard[i][j]]++;
+            else
+                countGemTypePerRow[gameBoard[i][j]] = 1;
+        }
+        for (auto& it: countGemTypePerRow)
+        {
+            if(it.second >=2)
+                return true;
+        }
+    }
+    return false;
 }
